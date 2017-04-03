@@ -27,18 +27,17 @@ void printWord(SearchTree<Word> *book)
 }
 
 // prints word distribution
-void printWordDistribution(vector<Word*> &wordList)
+void printWordDistribution(vector<Word*> *wordList)
 {
-	for each (Word *var in wordList)
+	for each (Word *var in *wordList)
 	{
 		cout << var->word << ": " << var->frequency << endl;
 	}
 }
 
 // puts book data into a search tree and returns whether it was successful
-SearchTree<Word> * readBookData(string filename)
+void readBookData(string filename, SearchTree<Word> *book)
 {
-	SearchTree<Word> *book = new SearchTree<Word>();
 	ifstream stream;
 	stream.open(filename, ios::in);
 	while (stream.fail())
@@ -99,7 +98,6 @@ SearchTree<Word> * readBookData(string filename)
 	}
 
 	stream.close();
-	return book;
 }
 
 // method containing all the main code for the assignment
@@ -109,7 +107,8 @@ void analyzeBook()
 	cout << "Enter filename: ";
 	cin >> input;
 	bool success = false;
-	SearchTree<Word> *book = readBookData(input);
+	SearchTree<Word> *book = new SearchTree<Word>();
+	readBookData(input, book);
 	bool cont = true;
 	while (cont)
 	{
@@ -131,16 +130,17 @@ void analyzeBook()
 			printWord(book);
 			break;
 		case 2:
-			printWordDistribution(book->GetAllAscending());
+			printWordDistribution(&book->GetAllAscending());
 			break;
 		case 3:
-			printWordDistribution(book->GetAllDescending());
+			printWordDistribution(&book->GetAllDescending());
 			break;
 		case 4:
 			cont = false;
 			break;
 		}
 	}
+	book->EmptyTree();
 	delete book;
 }
 
@@ -152,9 +152,9 @@ int main()
 		char answer;
 		do
 		{
-			cout << "Would you like to process another book?(y/n):";
+			cout << "Would you like to process another book?(y/n): ";
 			cin >> answer;
-		} while (answer != 'y' || answer != 'n');
+		} while (answer != 'y' && answer != 'n');
 		if (answer == 'n')
 			break;
 	}

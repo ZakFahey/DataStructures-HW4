@@ -6,7 +6,7 @@ class Node
 public:
 	Node<T>();
 	Node<T>(T *value);
-	~Node();
+	void Empty();
 	bool red;
 	T *value;
 	Node<T> *parent;
@@ -34,7 +34,7 @@ inline Node<T>::Node(T *value_in)
 }
 
 template<class T>
-inline Node<T>::~Node()
+inline void Node<T>::Empty()
 {
 	if (value != nullptr)
 	{
@@ -43,12 +43,12 @@ inline Node<T>::~Node()
 	}
 	if (children[0] != nullptr)
 	{
-		delete children[0];
+		children[0]->Empty();
 		children[0] = nullptr;
 	}
 	if (children[1] != nullptr)
 	{
-		delete children[1];
+		children[1]->Empty();
 		children[1] = nullptr;
 	}
 }

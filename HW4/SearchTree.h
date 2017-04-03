@@ -283,7 +283,7 @@ inline void SearchTree<T>::EmptyTree()
 	size = 0;
 	if(root != nullptr)
 	{
-		delete root;
+		root->Empty();
 		root = nullptr;
 	}
 }

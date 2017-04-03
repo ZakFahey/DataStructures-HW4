@@ -1,30 +1,54 @@
 #pragma once
 
-template <class T>
+template<class T>
 class Node
 {
 public:
-	Node(T *value);
+	Node<T>();
+	Node<T>(T *value);
+	~Node();
+	bool red;
 	T *value;
-	Node *children[2];
-	void Empty();
+	Node<T> *parent;
+	Node<T> *children[2];
 };
 
 template<class T>
-inline Node<T>::Node(T *value)
+inline Node<T>::Node()
 {
-	this->value = value;
-	children = new Node[2]{ nullptr, nullptr };
+	red = true;
+	value = nullptr;
+	parent = nullptr;
+	children[0] = nullptr;
+	children[1] = nullptr;
 }
 
 template<class T>
-inline void Node<T>::Empty()
+inline Node<T>::Node(T *value_in)
 {
-	delete value;
-	for(int i = 0; i < 2; i++)
+	red = true;
+	value = value_in;
+	parent = nullptr;
+	children[0] = nullptr;
+	children[1] = nullptr;
+}
+
+template<class T>
+inline Node<T>::~Node()
+{
+	if (value != nullptr)
 	{
-		if (children[0] != nullptr)
-			delete children[0];
+		delete value;
+		value = nullptr;
 	}
-	delete this;
+	if (children[0] != nullptr)
+	{
+		delete children[0];
+		children[0] = nullptr;
+	}
+	if (children[1] != nullptr)
+	{
+		delete children[1];
+		children[1] = nullptr;
+	}
 }
